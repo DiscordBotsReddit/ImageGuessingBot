@@ -5,7 +5,7 @@ https://discord.com/api/oauth2/authorize?client_id=1130923435724382239&permissio
 
 ---
 
-Required permissions:
+## Required permissions:
 
 - `Send Messages` - To send messages
 
@@ -15,11 +15,11 @@ Required permissions:
 
 ---
 
-Current commands:
+## Current commands:
 
 - `/new solution image` - Adds a new image to the guessing database.  The solution provided is case-sensitive (`flower` is not the same as `Flower`).  Supports images and gifs.
 
-- `/remove word` - Removes an image from the guessing database.  `word` will autocomplete based on your current database entries and what you have typed so far.
+- `/remove word` - Removes an image from the guessing database.  The options `word` will autocomplete based on your current database entries and what you have typed so far.
 
 - `/start [timeout]` - Starts a new guessing game.  Everyone has `timeout` seconds (defaults to 30) to find the correct word, or the game ends.  There is a 3 second delay between rounds.
 
