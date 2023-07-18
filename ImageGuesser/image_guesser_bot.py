@@ -5,7 +5,6 @@ from typing import Literal, Optional
 import discord
 from discord.ext import commands
 from discord.ext.commands import ExtensionAlreadyLoaded
-from rich import print
 
 intents = discord.Intents.default()
 intents.message_content = True
