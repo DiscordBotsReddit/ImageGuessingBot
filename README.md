@@ -21,6 +21,6 @@ Current commands:
 
 - `/remove word` - Removes an image from the guessing database.  `word` will autocomplete based on your current database entries and what you have typed so far.
 
-- `/start` - Starts a new guessing game.  Everyone has 30 seconds to find the correct word, or the game ends.  There is a 3 second delay between rounds.
+- `/start [timeout]` - Starts a new guessing game.  Everyone has `timeout` seconds (defaults to 30) to find the correct word, or the game ends.  There is a 3 second delay between rounds.
 
 - `/end` - Ends the current guessing game.  (Current known bug: If you end the game during a round, the game timeout message will still show after 30 seconds)
