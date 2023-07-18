@@ -3,8 +3,6 @@ Discord.py bot to hold guessing games for images.
 
 https://discord.com/api/oauth2/authorize?client_id=1130923435724382239&permissions=274877909056&scope=bot
 
----
-
 ## Required permissions:
 
 - `Send Messages` - To send messages
@@ -12,8 +10,6 @@ https://discord.com/api/oauth2/authorize?client_id=1130923435724382239&permissio
 - `Send Messages in Threads`- To give you the option of keeping the quiz in a ForumChannel Thread
 
 - `Add Reaction` - Adds a ✅ to the winning message.
-
----
 
 ## Current commands:
 
