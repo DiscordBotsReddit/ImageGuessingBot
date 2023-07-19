@@ -3,7 +3,6 @@ import json
 import random
 import re
 import unicodedata
-from threading import Thread
 from typing import Union
 
 import discord
@@ -33,8 +32,9 @@ class GameLogic(commands.Cog):
         return fixed
     
     async def game_thread(self, channel_id: int):
-        timeout_setting = 30
         game_channel: Union[discord.TextChannel, discord.Thread] = await self.bot.fetch_channel(channel_id)  # type: ignore
+        with Session(engine) as session:
+            timeout_setting = session.scalar(select(Game.timeout).where(Game.guild_id==game_channel.guild.id))
         with Session(engine) as session:
             guess_choices = session.execute(select(Image.image_url,Image.solution).where(Image.guild_id==game_channel.guild.id)).fetchall()
         winning_img, winning_solution = random.choice(guess_choices)
@@ -82,21 +82,22 @@ class GameLogic(commands.Cog):
             with Session(engine) as session:
                 session.execute(delete(Game).where(Game.guild_id==game_channel.guild.id))
                 session.commit()
-            await game_channel.send(f"## No one answered within {timeout_setting} seconds.  Game closed.")
+            await game_channel.send(f"### No one answered within {timeout_setting} seconds.  Game closed.")
     
     @tasks.loop(seconds=0.1)
     async def game_loop(self):
         with Session(engine) as session:
             all_games = session.scalars(select(Game.channel_id)).all()
-        for game in all_games:
-            running_tasks = list()
-            loop = asyncio.get_running_loop()
-            for task in asyncio.all_tasks():
-                running_tasks.append(task.get_name())
-            if str(game) in running_tasks:
-                pass
-            else:
-                loop.create_task(self.game_thread(game), name=str(game))
+        if len(all_games) > 0:
+            for game in all_games:
+                running_tasks = list()
+                loop = asyncio.get_running_loop()
+                for task in asyncio.all_tasks():
+                    running_tasks.append(task.get_name())
+                if str(game) in running_tasks:
+                    pass
+                else:
+                    loop.create_task(self.game_thread(game), name=str(game))
 
 
 async def setup(bot: commands.Bot):

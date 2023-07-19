@@ -1,7 +1,5 @@
 import json
-import os
 import unicodedata
-from typing import List
 
 import discord
 from discord import app_commands
@@ -25,7 +23,8 @@ class GameManagement(commands.Cog):
         return fixed
     
     @app_commands.command(name='start', description='Starts a new guessing game.')  #type: ignore
-    async def start_new_game(self, interaction: discord.Interaction):
+    @app_commands.describe(timeout='The length of time you want the round to run before the game closes (default=5 minutes).')
+    async def start_new_game(self, interaction: discord.Interaction, timeout: int = 300):
         if str(interaction.channel.type) != 'text':  #type: ignore
             if 'thread' not in str(interaction.channel.type):  #type: ignore
                 return await interaction.response.send_message("Please run this command in a text channel.")
@@ -35,11 +34,12 @@ class GameManagement(commands.Cog):
             with Session(engine) as sess:
                 new_game = Game(
                     guild_id=interaction.guild_id,
-                    channel_id=interaction.channel_id
+                    channel_id=interaction.channel_id,
+                    timeout=timeout
                 )
                 sess.add(new_game)
                 sess.commit()
-            await interaction.response.send_message("New guessing game starting!")
+            await interaction.response.send_message(f"New guessing game starting! (Timeout length = `{timeout}` seconds)")
         else:
             await interaction.response.send_message("Game already going...", ephemeral=True, delete_after=30)
 

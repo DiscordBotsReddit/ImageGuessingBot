@@ -11,3 +11,4 @@ class Game(Base):
     id: Mapped[int] = mapped_column(Integer, Identity(always=True), primary_key=True)
     guild_id: Mapped[int] = mapped_column(BigInteger)
     channel_id: Mapped[int] = mapped_column(BigInteger)
+    timeout: Mapped[int] = mapped_column(Integer)

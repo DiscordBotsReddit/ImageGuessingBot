@@ -1,16 +1,16 @@
 import json
-import os
 import unicodedata
 from typing import List
 
 import discord
 from discord import app_commands
 from discord.ext import commands
+from sqlalchemy import create_engine, delete, select
+from sqlalchemy.orm import Session
+
 from modals.game import Game
 from modals.image import Image
 from modals.points import Points
-from sqlalchemy import create_engine, delete, select
-from sqlalchemy.orm import Session
 
 with open("./config.json", "r") as f:
     config = json.load(f)
@@ -27,6 +27,10 @@ class DataManagement(commands.Cog):
         return fixed
     
     @commands.Cog.listener()
+    async def on_guild_join(self, guild: discord.Guild):
+        print(f"Added to {guild.name} (ID: {guild.id})")
+
+    @commands.Cog.listener()
     async def on_guild_remove(self, guild: discord.Guild):
         with Session(engine) as session:
             session.execute(delete(Image).where(Image.guild_id==guild.id))
@@ -38,7 +42,6 @@ class DataManagement(commands.Cog):
     @app_commands.command(name='new', description='Add a new image to the guessing database.')  # type: ignore
     @app_commands.describe(solution='The text you want users to send to have a correct answer (case-sensitive)')
     async def add_new_image(self, interaction: discord.Interaction, solution: str, image: discord.Attachment):
-        solution = self.fix_unicode(solution)
         with Session(engine) as session:
             new_image = Image(
                 guild_id=interaction.guild_id,
