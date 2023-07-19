@@ -1,6 +1,8 @@
 # ImageGuessingBot
 Discord.py bot to hold guessing games for images.
 
+https://top.gg/bot/1130923435724382239
+
 https://discord.com/api/oauth2/authorize?client_id=1130923435724382239&permissions=274877909056&scope=bot
 
 ## Required permissions:
