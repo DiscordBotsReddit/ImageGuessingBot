@@ -19,4 +19,4 @@ https://discord.com/api/oauth2/authorize?client_id=1130923435724382239&permissio
 
 - `/start [timeout]` - Starts a new guessing game.  Everyone has `timeout` seconds (defaults to 30) to find the correct word, or the game ends.  There is a 3 second delay between rounds.
 
-- `/end` - Ends the current guessing game.  (Current known bug: If you end the game during a round, the game timeout message will still show after 30 seconds)
+- `/end` - Ends the current guessing game.  ~~(Current known bug: If you end the game during a round, the game timeout message will still show after 30 seconds)~~ Fixed.
