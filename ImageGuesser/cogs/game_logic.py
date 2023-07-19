@@ -80,9 +80,11 @@ class GameLogic(commands.Cog):
             await asyncio.sleep(3)
         except asyncio.TimeoutError:
             with Session(engine) as session:
+                current_game = session.scalar(select(Game).where(Game.guild_id==game_channel.guild.id))
                 session.execute(delete(Game).where(Game.guild_id==game_channel.guild.id))
                 session.commit()
-            await game_channel.send(f"### No one answered within {timeout_setting} seconds.  Game closed.")
+            if current_game is not None:
+                await game_channel.send(f"### No one answered within {timeout_setting} seconds.  Game closed.")
     
     @tasks.loop(seconds=0.1)
     async def game_loop(self):
