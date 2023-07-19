@@ -13,10 +13,10 @@ https://discord.com/api/oauth2/authorize?client_id=1130923435724382239&permissio
 
 ## Current commands:
 
-- `/new solution image` - Adds a new image to the guessing database.  The solution provided is case-sensitive (`flower` is not the same as `Flower`).  Supports images and gifs.
+- `/new solution quiz_bank image` - Adds a new image to the guessing database grouped by `quiz_bank`.  The solution provided is case-sensitive (`flower` is not the same as `Flower`).  Supports images and gifs.
 
 - `/remove word` - Removes an image from the guessing database.  The options `word` will autocomplete based on your current database entries and what you have typed so far.
 
-- `/start [timeout]` - Starts a new guessing game.  Everyone has `timeout` seconds (defaults to 30) to find the correct word, or the game ends.  There is a 3 second delay between rounds.
+- `/start guess_bank [timeout]` - Starts a new guessing game with images from your `guess_bank`.  Everyone has `timeout` seconds (defaults to 30) to find the correct word, or the game ends.  There is a 3 second delay between rounds.
 
 - `/end` - Ends the current guessing game.  ~~(Current known bug: If you end the game during a round, the game timeout message will still show after 30 seconds)~~ Fixed.
