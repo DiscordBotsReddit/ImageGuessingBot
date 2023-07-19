@@ -1,6 +1,8 @@
 # ImageGuessingBot 🎨
 Discord.py bot to hold guessing games for images.
 
+Idea came from:  https://www.reddit.com/r/discordbot/comments/152yv72/discord_image_quizz_bot/
+
 https://discord.com/api/oauth2/authorize?client_id=1130923435724382239&permissions=274877909056&scope=bot
 
 ## Required permissions:
