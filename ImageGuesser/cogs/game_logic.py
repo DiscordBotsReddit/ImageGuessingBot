@@ -38,7 +38,7 @@ class GameLogic(commands.Cog):
         with Session(engine) as session:
             guess_choices = session.execute(select(Image.image_url,Image.solution).where(Image.guild_id==game_channel.guild.id)).fetchall()
         winning_img, winning_solution = random.choice(guess_choices)
-        hint = winning_solution[0:1] + re.sub(r'[a-zA-Z]', '•', winning_solution[1:])
+        hint = winning_solution[0:2] + re.sub(r'[a-zA-Z]', '•', winning_solution[2:])
         round_embed = discord.Embed(title="", description=f"**HINT: {hint}**")
         round_embed.set_image(url=winning_img)
         await game_channel.send(embed=round_embed) #type: ignore
