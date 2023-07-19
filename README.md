@@ -1,7 +1,8 @@
 # ImageGuessingBot
 Discord.py bot to hold guessing games for images.
 
-https://top.gg/bot/1130923435724382239
+If you're enjoying Image Guesser, please consider leaving a review on Top.gg! 
+https://top.gg/bot/1130923435724382239#reviews
 
 https://discord.com/api/oauth2/authorize?client_id=1130923435724382239&permissions=274877909056&scope=bot
 
