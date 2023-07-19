@@ -12,3 +12,4 @@ class Image(Base):
     guild_id: Mapped[int] = mapped_column(BigInteger)
     image_url: Mapped[str] = mapped_column(Text)
     solution: Mapped[str] = mapped_column(Text)
+    quiz_bank: Mapped[str] = mapped_column(Text)

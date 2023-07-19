@@ -34,9 +34,18 @@ class GameLogic(commands.Cog):
     async def game_thread(self, channel_id: int):
         game_channel: Union[discord.TextChannel, discord.Thread] = await self.bot.fetch_channel(channel_id)  # type: ignore
         with Session(engine) as session:
-            timeout_setting = session.scalar(select(Game.timeout).where(Game.guild_id==game_channel.guild.id))
+            timeout_setting = session.scalar(select(Game.timeout).where(Game.guild_id==game_channel.guild.id,Game.channel_id==game_channel.id))
+            game_bank = session.scalar(select(Game.quiz_bank).where(Game.guild_id==game_channel.guild.id,Game.channel_id==game_channel.id))
         with Session(engine) as session:
-            guess_choices = session.execute(select(Image.image_url,Image.solution).where(Image.guild_id==game_channel.guild.id)).fetchall()
+            guess_choices = session.execute(select(Image.image_url,Image.solution).where(Image.guild_id==game_channel.guild.id,Image.quiz_bank==game_bank)).fetchall()
+        if len(guess_choices) == 0:
+            with Session(engine) as session:
+                session.execute(delete(Game).where(Game.guild_id==game_channel.guild.id,Game.channel_id==game_channel.id))
+                session.commit()
+            for task in asyncio.all_tasks():
+                if task.get_name() == str(channel_id):
+                    task.cancel()
+            return await game_channel.send("You have no images to pick from!  New game cancelled.")
         winning_img, winning_solution = random.choice(guess_choices)
         hint = winning_solution[0:2] + re.sub(r'[a-zA-Z]', '•', winning_solution[2:])
         round_embed = discord.Embed(title="", description=f"**HINT: {hint}**")
@@ -80,8 +89,8 @@ class GameLogic(commands.Cog):
             await asyncio.sleep(3)
         except asyncio.TimeoutError:
             with Session(engine) as session:
-                current_game = session.scalar(select(Game).where(Game.guild_id==game_channel.guild.id))
-                session.execute(delete(Game).where(Game.guild_id==game_channel.guild.id))
+                current_game = session.scalar(select(Game).where(Game.guild_id==game_channel.guild.id,Game.channel_id==game_channel.id))
+                session.execute(delete(Game).where(Game.guild_id==game_channel.guild.id,Game.channel_id==game_channel.id))
                 session.commit()
             if current_game is not None:
                 await game_channel.send(f"### No one answered within {timeout_setting} seconds.  Game closed.")
