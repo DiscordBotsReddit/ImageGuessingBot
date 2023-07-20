@@ -15,7 +15,7 @@ https://discord.com/api/oauth2/authorize?client_id=1130923435724382239&permissio
 
 ## Current commands:
 
-- `/new solution databank image` - Adds a new image to the guessing database grouped by `quiz_bank`.  The solution provided is case-sensitive (`flower` is not the same as `Flower`).  Supports images and gifs.
+- `/new solution databank image` - Adds a new image to the guessing database grouped by `databank`.  The solution provided is case-sensitive (`flower` is not the same as `Flower`).  Supports images and gifs.
 
 - `/update solution [new_solution] [new_image] [new_bank]` - Updates the solution in your database.  All parameters are optional.
 
