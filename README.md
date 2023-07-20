@@ -34,3 +34,7 @@ https://discord.com/api/oauth2/authorize?client_id=1130923435724382239&permissio
 If you're enjoying Image Guesser, please consider leaving a review on Top.gg!
 
 https://top.gg/bot/1130923435724382239#reviews
+
+Also on the Discord Bot List
+
+https://discord.bots.gg/bots/1130923435724382239
