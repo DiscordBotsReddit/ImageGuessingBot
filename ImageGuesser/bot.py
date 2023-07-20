@@ -58,6 +58,7 @@ async def reload(ctx: commands.Context, extension: str):
 @bot.command()
 @commands.is_owner()
 async def reloadall(ctx: commands.Context):
+    await ctx.message.delete()
     for subdir, _, files in os.walk("cogs"):
         files = [file for file in files if file.endswith(".py") and "template" not in file]
         for file in files:
