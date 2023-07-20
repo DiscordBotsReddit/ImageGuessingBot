@@ -27,7 +27,9 @@ https://discord.com/api/oauth2/authorize?client_id=1130923435724382239&permissio
 
 - `/end` - Ends the current guessing game.
 
-- `/user reset_points member double_check` - Resets the given server member's points to 0 (zero).  Requires you to have the `Ban Members` or `Administrator` permissions to run.  `double_check` accepts `no | yes` and must be `yes` to reset the points.
+- `/users reset_points member double_check` - Resets the given server member's points to 0 (zero).  Requires you to have the `Ban Members` or `Administrator` permissions to run.  `double_check` accepts `no | yes` and must be `yes` to reset the points.
+
+- `/users leaderboard` - Shows the server's points leaderboard
 
 
 
