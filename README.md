@@ -23,7 +23,7 @@ https://discord.com/api/oauth2/authorize?client_id=1130923435724382239&permissio
 
 - `/remove word databank` - Removes an image from the guessing database.  The options for `word` and `databank` will autocomplete based on your current database entries and what you have typed so far.
 
-- `/start databank [timeout]` - Starts a new guessing game with images from your `guess_bank`.  Everyone has `timeout` seconds (defaults to 30) to find the correct word, or the game ends.  There is a 3 second delay between rounds.
+- `/start databank [timeout]` - Starts a new guessing game with images from your `databank`.  Everyone has `timeout` seconds (defaults to 30) to find the correct word, or the game ends.  There is a 3 second delay between rounds.
 
 - `/end` - Ends the current guessing game.
 
