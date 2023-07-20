@@ -5,9 +5,10 @@ from typing import Literal
 import discord
 from discord import app_commands
 from discord.ext import commands
-from modals.points import Points
-from sqlalchemy import create_engine, delete, select, update
+from sqlalchemy import create_engine, update
 from sqlalchemy.orm import Session
+
+from modals.points import Points
 
 with open("./config.json", "r") as f:
     config = json.load(f)

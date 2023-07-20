@@ -10,11 +10,12 @@ from typing import Union
 import discord
 import PIL.Image as PImage
 from discord.ext import commands, tasks
+from sqlalchemy import create_engine, delete, select, update
+from sqlalchemy.orm import Session
+
 from modals.game import Game
 from modals.image import Image
 from modals.points import Points
-from sqlalchemy import create_engine, delete, select, update
-from sqlalchemy.orm import Session
 
 with open("./config.json", "r") as f:
     config = json.load(f)
@@ -38,9 +39,9 @@ class GameLogic(commands.Cog):
         game_channel: Union[discord.TextChannel, discord.Thread] = await self.bot.fetch_channel(channel_id)  # type: ignore
         with Session(engine) as session:
             timeout_setting = session.scalar(select(Game.timeout).where(Game.guild_id==game_channel.guild.id,Game.channel_id==game_channel.id))
-            game_bank = session.scalar(select(Game.quiz_bank).where(Game.guild_id==game_channel.guild.id,Game.channel_id==game_channel.id))
+            game_bank = session.scalar(select(Game.databank).where(Game.guild_id==game_channel.guild.id,Game.channel_id==game_channel.id))
         with Session(engine) as session:
-            guess_choices = session.execute(select(Image.image,Image.solution).where(Image.guild_id==game_channel.guild.id,Image.quiz_bank==game_bank)).fetchall()
+            guess_choices = session.execute(select(Image.image,Image.solution).where(Image.guild_id==game_channel.guild.id,Image.databank==game_bank)).fetchall()
         if len(guess_choices) == 0:
             with Session(engine) as session:
                 session.execute(delete(Game).where(Game.guild_id==game_channel.guild.id,Game.channel_id==game_channel.id))
@@ -52,12 +53,12 @@ class GameLogic(commands.Cog):
         pre_winning_img, winning_solution = random.choice(guess_choices)
         pre_winning_img = PImage.open(io.BytesIO(pre_winning_img))
         pre_winning_img.save(str(game_channel.id)+'-tempimg.png')
-        post_winning_img = discord.File('tempimg.png', filename='guess.png')
+        post_winning_img = discord.File(str(game_channel.id)+'-tempimg.png', filename='guess.png')
         hint = winning_solution[0:2] + re.sub(r'[a-zA-Z]', '•', winning_solution[2:])
         round_embed = discord.Embed(title="", description=f"**HINT: {hint}**")
         round_embed.set_image(url='attachment://guess.png')
         await game_channel.send(file=post_winning_img,embed=round_embed) #type: ignore
-        os.remove('tempimg.png')
+        os.remove(str(game_channel.id)+'-tempimg.png')
         def check_right(m):
             return m.content == winning_solution and m.channel.id == game_channel.id
         try:

@@ -5,7 +5,7 @@ from typing import Literal, Optional
 import discord
 from discord.ext import commands
 from discord.ext.commands import ExtensionAlreadyLoaded
-from rich import print
+from rich import print  # type: ignore
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -42,6 +42,53 @@ async def on_ready():
     for guild in bot.guilds:
         print(f"{guild.name} ({guild.id})")
     print("Logged in as", bot.user)
+
+
+@bot.command()
+@commands.is_owner()
+async def reload(ctx: commands.Context, extension: str):
+    await ctx.message.delete()
+    try:
+        await bot.reload_extension(f'cogs.{extension}')
+        await ctx.send(f"Reloaded `{extension.upper()}`.")
+    except Exception as e:
+        await ctx.send(f"Error reloading `{extension.upper()}`\n{e}")
+
+
+@bot.command()
+@commands.is_owner()
+async def reloadall(ctx: commands.Context):
+    for subdir, _, files in os.walk("cogs"):
+        files = [file for file in files if file.endswith(".py") and "template" not in file]
+        for file in files:
+            if len(subdir.split("cogs\\")) >= 2:
+                try:
+                    sub = subdir.split('cogs\\')[1]
+                    await bot.load_extension(f"cogs.{sub}.{file[:-3]}")
+                    await ctx.send(f"Loaded `cogs.{sub}.{file[:-3]}`")
+                except ExtensionAlreadyLoaded:
+                    sub = subdir.split('cogs\\')[1]
+                    await bot.reload_extension(f"cogs.{sub}.{file[:-3]}")
+                    await ctx.send(f"Reloaded `cogs.{sub}.{file[:-3]}`")
+            else:
+                try:
+                    await bot.load_extension(f"{subdir}.{file[:-3]}")
+                    await ctx.send(f"Loaded `{subdir}.{file[:-3]}`")
+                except ExtensionAlreadyLoaded:
+                    await bot.reload_extension(f"{subdir}.{file[:-3]}")
+                    await ctx.send(f"Reloaded `{subdir}.{file[:-3]}`")
+
+
+@bot.command()
+@commands.is_owner()
+async def load(ctx: commands.Context, extension: str):
+    await ctx.message.delete()
+    try:
+        await bot.load_extension(f"cogs.{extension}")
+        await ctx.send(f"Loaded `{extension.upper()}`")
+    except:
+        await ctx.send(f"Error loading `{extension.upper()}`\n{e}")
+
 
 
 # https://about.abstractumbra.dev/discord.py/2023/01/29/sync-command-example.html

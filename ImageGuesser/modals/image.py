@@ -12,4 +12,4 @@ class Image(Base):
     guild_id: Mapped[int] = mapped_column(BigInteger)
     image: Mapped[str] = mapped_column(BLOB)
     solution: Mapped[str] = mapped_column(Text)
-    quiz_bank: Mapped[str] = mapped_column(Text)
+    databank: Mapped[str] = mapped_column(Text)

@@ -1,15 +1,14 @@
 import json
 import unicodedata
-from typing import Literal
 
 import discord
-from discord import app_commands
 from discord.ext import commands
+from sqlalchemy import create_engine, delete
+from sqlalchemy.orm import Session
+
 from modals.game import Game
 from modals.image import Image
 from modals.points import Points
-from sqlalchemy import create_engine, delete, select, update
-from sqlalchemy.orm import Session
 
 with open("./config.json", "r") as f:
     config = json.load(f)

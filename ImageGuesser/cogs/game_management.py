@@ -5,10 +5,11 @@ from typing import List
 import discord
 from discord import app_commands
 from discord.ext import commands
-from modals.game import Game
-from modals.image import Image
 from sqlalchemy import create_engine, delete, distinct, select
 from sqlalchemy.orm import Session
+
+from modals.game import Game
+from modals.image import Image
 
 with open("./config.json", "r") as f:
     config = json.load(f)
@@ -26,7 +27,7 @@ class GameManagement(commands.Cog):
     
     async def start_game_autocomplete(self, interaction: discord.Interaction, current: str) -> List[app_commands.Choice[str]]:
         with Session(engine) as session:
-            results = session.scalars(select(distinct(Image.quiz_bank)).where(Image.quiz_bank.startswith(current), Image.guild_id==interaction.guild_id).order_by(Image.quiz_bank.asc()).limit(25)).all()
+            results = session.scalars(select(distinct(Image.databank)).where(Image.databank.startswith(current), Image.guild_id==interaction.guild_id).order_by(Image.databank.asc()).limit(25)).all()
         return [app_commands.Choice(name=solution, value=solution) for solution in results]
 
     @app_commands.command(name='start', description='Starts a new guessing game.')  #type: ignore
@@ -49,7 +50,7 @@ class GameManagement(commands.Cog):
                     guild_id=interaction.guild_id,
                     channel_id=interaction.channel_id,
                     timeout=timeout,
-                    quiz_bank=guess_bank
+                    databank=guess_bank
                 )
                 sess.add(new_game)
                 sess.commit()
