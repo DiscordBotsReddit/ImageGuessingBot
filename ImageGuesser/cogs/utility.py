@@ -17,7 +17,7 @@ with open("./config.json", "r") as f:
 engine = create_engine(config["DATABASE"])
 
 
-class Utility(commands.GroupCog, name='user'):
+class Utility(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 

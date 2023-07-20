@@ -25,18 +25,6 @@ class DataManagement(commands.Cog):
         fixed = unicodedata.normalize("NFKD", str).encode("ascii", "ignore").decode()
         return fixed
     
-    @commands.Cog.listener()
-    async def on_guild_join(self, guild: discord.Guild):
-        print(f"Added to {guild.name} (ID: {guild.id})")
-
-    @commands.Cog.listener()
-    async def on_guild_remove(self, guild: discord.Guild):
-        with Session(engine) as session:
-            session.execute(delete(Image).where(Image.guild_id==guild.id))
-            session.execute(delete(Game).where(Game.guild_id==guild.id))
-            session.execute(delete(Points).where(Points.guild_id==guild.id))
-            session.commit()
-        print(f"Removed from {self.fix_unicode(guild.name)} (ID: {guild.id}) - All data removed.")
     
     @app_commands.command(name='new', description='Add a new image to the guessing database.')  # type: ignore
     @app_commands.describe(solution='The text you want users to send to have a correct answer (case-sensitive)')
@@ -45,7 +33,7 @@ class DataManagement(commands.Cog):
         with Session(engine) as session:
             new_image = Image(
                 guild_id=interaction.guild_id,
-                image_url=image.url,
+                image=await image.read(),
                 solution=solution,
                 quiz_bank=quiz_bank
             )
@@ -80,7 +68,7 @@ class DataManagement(commands.Cog):
     async def update_image(self, interaction: discord.Interaction, solution: str, new_solution: Optional[str], new_image: Optional[discord.Attachment], new_bank: Optional[str]):
         with Session(engine) as session:
             if new_image is not None:
-                session.execute(update(Image).where(Image.solution==solution).values(image_url=new_image.url))
+                session.execute(update(Image).where(Image.solution==solution).values(image=await new_image.read()))
             if new_bank is not None:
                 session.execute(update(Image).where(Image.solution==solution).values(quiz_bank=new_bank))
             if new_solution is not None:

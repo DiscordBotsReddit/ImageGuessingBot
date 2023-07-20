@@ -40,6 +40,10 @@ class GameManagement(commands.Cog):
         with Session(engine) as session:
             cur_game = session.scalar(select(Game).where(Game.guild_id==interaction.guild_id,Game.channel_id==interaction.channel_id))
         if cur_game is None:
+            with Session(engine) as session:
+                images = session.scalars(select(Image).where(Image.guild_id==interaction.guild_id)).fetchall()
+            if len(images) == 0:
+                return await interaction.response.send_message("You have no images uploaded.", ephemeral=True, delete_after=10)
             with Session(engine) as sess:
                 new_game = Game(
                     guild_id=interaction.guild_id,
