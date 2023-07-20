@@ -5,7 +5,7 @@ Idea came from:  https://www.reddit.com/r/discordbot/comments/152yv72/discord_im
 
 https://discord.com/api/oauth2/authorize?client_id=1130923435724382239&permissions=274877909056&scope=bot
 
-### 7/19/2023:  All images were deleted.  Changed the format that I stored them as.  Will not happen again in the future.
+### 7/19/2023:  All stored images were deleted.  Changed the format that I stored them as.  Will not happen again in the future.
 
 ## Required permissions:
 
