@@ -12,4 +12,4 @@ class Game(Base):
     guild_id: Mapped[int] = mapped_column(BigInteger)
     channel_id: Mapped[int] = mapped_column(BigInteger)
     timeout: Mapped[int] = mapped_column(Integer)
-    quiz_bank: Mapped[int] = mapped_column(Text)
+    databank: Mapped[int] = mapped_column(Text)
