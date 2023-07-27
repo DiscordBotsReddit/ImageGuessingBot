@@ -31,6 +31,8 @@ https://discord.com/api/oauth2/authorize?client_id=1130923435724382239&permissio
 
 - `/users leaderboard` - Shows the server's points leaderboard
 
+- `/stats` - General bot stats.  (Once per 60 seconds per guild/server)
+
 
 
 If you're enjoying Image Guesser, please consider leaving a review on Top.gg!
