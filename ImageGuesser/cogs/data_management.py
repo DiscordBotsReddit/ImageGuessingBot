@@ -5,7 +5,7 @@ from typing import List, Optional
 import discord
 from discord import app_commands
 from discord.ext import commands
-from sqlalchemy import create_engine, delete, select, update
+from sqlalchemy import create_engine, delete, exists, select, update
 from sqlalchemy.orm import Session
 
 from modals.image import Image
@@ -42,6 +42,9 @@ class DataManagement(commands.Cog):
     @app_commands.describe(databank='The bank of questions you want this solution to be in.')
     async def add_image(self, interaction: discord.Interaction, solution: str, databank: str, image: discord.Attachment):
         with Session(engine) as session:
+            existing_solution = session.execute(select(Image).where(Image.solution==solution,Image.databank==databank)).one_or_none()
+            if existing_solution is not None:
+                return await interaction.response.send_message(f"You already have a solution called `{solution}` in the `{databank}` databank.", ephemeral=True, delete_after=120)
             new_image = Image(
                 guild_id=interaction.guild_id,
                 image=await image.read(),
